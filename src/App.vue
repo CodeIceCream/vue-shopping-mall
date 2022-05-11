@@ -3,7 +3,6 @@
     <Header></Header>
     <!-- 路由组件出口的地方 -->
     <router-view></router-view>
-    <div>我是根组件</div>
     <Footer v-show="$route.meta.showFooter"></Footer>
   </div>
 </template>

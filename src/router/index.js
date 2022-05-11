@@ -8,6 +8,26 @@ import Home from '@/views/Home';
 import Login from '@/views/Login';
 import Register from '@/views/Register';
 import Search from '@/views/Search';
+// 先把VueRouter原型对象的push|replace保存一份
+const originPush = VueRouter.prototype.push;
+const originReplace = VueRouter.prototype.push;
+// 重写push|replace方法
+VueRouter.prototype.push = function (location, resolve, reject) {
+  if (resolve && reject) {
+    originPush.call(this, location, resolve, reject);
+  } else {
+    originPush.call(this, location, () => { }, () => { });
+  }
+}
+VueRouter.prototype.replace = function (location, resolve, reject) {
+  if (resolve && reject) {
+    originReplace.call(this, location, resolve, reject);
+  } else {
+    originReplace.call(this, location, () => { }, () => { })
+  }
+}
+
+
 // 开始配置路由
 export default new VueRouter({
   routes: [
@@ -30,10 +50,10 @@ export default new VueRouter({
       // 对象写法:额外给路由组件传一些props
       // props:{a:1,b:3}
       // 函数写法(最常用):可以将params、query参数通过props传给路由组件
-      props: ($route)=>{
+      props: ($route) => {
         return {
-          parVal:$route.params.parVal,
-          queryVal:$route.query.queryVal
+          parVal: $route.params.parVal,
+          queryVal: $route.query.queryVal
         }
       }
     },

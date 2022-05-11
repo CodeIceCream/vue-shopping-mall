@@ -154,3 +154,18 @@ query参数：路由不需要占位，写法类似于ajax当中query参数
      4:如果指定name与params配置, 但params中数据是一个"", 无法跳转，路径会出问题
      5: 路由组件能不能传递props数据?
      
++ 路由传参的方式
+    + 第一种：字符串形式
+    `this.$router.push(
+    "/search/" + this.keyword + "?queryVal=" + this.keyword.toUpperCase()
+    );` 
+    + 第二种：模板字符串
+    `this.$router.push(
+    `/search/${this.keyword}?queryVal=${this.keyword.toUpperCase()}`
+    )`
+    + 第三种：定义路由名后传对象(常用)
+    `this.$router.push({
+    name:'search',
+    params: { parVal: this.keyword},
+    query: {queryVal: this.keyword.toUpperCase()}
+    })`
