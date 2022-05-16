@@ -1,47 +1,41 @@
 + 注意事项:
      + 项目阶段，左侧菜单目录，只能有项目文件夹
      + 联想电脑安装node_modules依赖包的时候，经常丢包。npm install --save axios --force
-     + 单词错误
-     + 路由理解
-     KV：K--->URL  V---->相应的组件
+     + 单词不能有错误
+     + 路由理解KV：K--->URL  V---->相应的组件
      + 配置路由：
-          ------路由组件
-          -----router--->index.js
-                    import Vue  from 'vue';
-                    import VueRouter from 'vue-router';
-                    //使用插件
-                    Vue.use(VueRouter);
-                    //对外暴露VueRouter类的实例
-                    export default new VueRouter({
-                         routes:[
-                              {
-                                   path:'/home',
-                                   component:Home
-                              }
-                         ]
-                    })
-     ------main.js   配置项不能瞎写
+          + 创建router文件夹在index.js中必须先引入Vue:  
+          >`import Vue  from 'vue'`;  
+          + 再引入vue-router  
+          >`import VueRouter from 'vue-router'`;  
+          + Vue使用插件方法调用Vue.use().  
+          >`Vue.use(VueRouter)`;  
+          + 对外暴露VueRouter类的实例  
+          >`export default new VueRouter({  
+               routes:[
+                    {
+                         path:'/home',
+                         component:Home
+                    }
+               ]
+          })`  
+          + main创建Vue实例时把插件（注册）用上  
+          >new Vue({
+               render: h => h(App),
+               router
+          }).$mount('#app')
 
 
-`$router`: 进行编程式导航的路由跳转
-`this.$router.push` or `this.$router.replace` 
-
-$route中可以获取路由的信息|参数： 
-
-`this.$route.path` 
-
-`this.$route.params|query` 
-
-`this.$route.meta`
-
-
+`$router`: 进行编程式导航的路由跳转：`this.$router.push` or `this.$router.replace`  
+$route中可以获取路由的信息|参数：  
++ `this.$route.path`  
++ `this.$route.params|query`  
++ `this.$route.meta`
 1) 编程式导航路由跳转到当前路由(参数不变), 多次执行会抛出NavigationDuplicated的警告错误?
 注意:编程式导航（push|replace）才会有这种情况的异常，声明式导航是没有这种问题，因为声明式导航内部已经解决这种问题。 
 
-这种异常，对于程序没有任何影响的。 
-
-为什么会出现这种现象: 
-
+这种异常，对于程序没有任何影响的。  
+为什么会出现这种现象？  
 由于vue-router最新版本3.5.2，引入了promise，当传递参数多次且重复，会抛出异常，因此出现上面现象。 
 
 + 第一种解决方案：是给push函数，传入相应的成功的回调与失败的回调
@@ -76,7 +70,6 @@ $route中可以获取路由的信息|参数：
 
 
 5) axios二次封装 
-
 1. 为什么要二次封装axios？ 
 =>为了使用请求拦截器和响应拦截器
 + 请求拦截器: 可以在发送请求之前处理一些业务
@@ -96,7 +89,6 @@ $route中可以获取路由的信息|参数：
 })` 可以在成功和失败对数据进行一定处理
 
 6) 接口的统一管理
-
 + 项目很小：完全可以在组件的生命周期函数中发请求 
 + 项目大: axios.get('xxx')
 
@@ -109,19 +101,32 @@ $route中可以获取路由的信息|参数：
 
 
 
-2.2进度条：nprogress模块实现进度条功能
-工作的时候，修改进度条的颜色，修改源码样式.bar类名的
+8) 进度条：nprogress模块实现进度条功能
++ npm install --save nprogress 下载后import
++ 在请求开始时start(),得到请求响应时done()
++ 需要修改进度条的颜色时，修改源码样式.bar类名的颜色
 
 
 
 
-4)vuex:今晚务必vuex复习一下
-vuex:Vue官方提供的一个插件，插件可以管理项目共用数据。
-vuex：书写任何项目都需要vuex？
-项目大的时候，需要有一个地方‘统一管理数据’即为仓库store
-Vuex基本使用:
-
-
+9) vuex状态管理库的使用
+#### vuex: Vue官方提供的一个插件，插件可以管理项目共用数据。
+vuex是任何项目都需要vuex？  
+当项目大的时候，组件关系复杂，状态不好维护时强烈推荐使用。  
+1. Vuex基本使用:
++ 需要创建‘统一管理数据’即为仓库store文件
++ 使用插件都需要Vue.use(Vuex) 
++ main创建Vue实例时把插件（注册）用上  
+          >new Vue({
+               render: h => h(App),
+               store
+          }).$mount('#app')  
+2. Vuex基本概念：  
+state:仓库存储数据的地方  
+mutations:改变state的唯一手段  
+action:处理action,可以书写自己的业务逻辑，还可以处理异步  
+getters:理解为计算属性，用于简化仓库数据，让组件获取仓库的数据更方便
+modules：模块式开发存储数据，传入一个对象kv指向各种小仓库
 
 
 

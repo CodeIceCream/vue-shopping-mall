@@ -1,14 +1,18 @@
+import TypeNav from '@/components/TypeNav'
 import Vue from 'vue'
 import App from './App.vue'
-import TypeNav from '@/views/Home/TypeNav'
 Vue.component(TypeNav.name, TypeNav)
 Vue.config.productionTip = false
 // 引入路由
+import { reqCategoryList } from '@/api'
 import router from './router'
-import {reqCategoryList} from '@/api'
+import store from './store'
 reqCategoryList();
-new Vue({
+const vm = new Vue({
   render: h => h(App),
-  // 注册路由
-  router
+  // 注册路由,注册后vm拥有$route,$router属性
+  router,
+  // 注册仓库,注册后vm拥有$store属性
+  store
 }).$mount('#app')
+window.vm = vm

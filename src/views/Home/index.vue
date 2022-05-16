@@ -9,6 +9,7 @@
     <Floor/>
     <Floor/>
     <Brand/>
+    <Btn/>
   </div>
 </template>
 <script>
@@ -19,6 +20,7 @@ import Rank from '@/views/Home/Rank'
 import Like from '@/views/Home/Like'
 import Floor from '@/views/Home/Floor'
 import Brand from '@/views/Home/Brand'
+import Btn from '@/views/Home/Btn'
 export default {
   name: '',
   components:{
@@ -27,7 +29,8 @@ export default {
     Rank,
     Like,
     Floor,
-    Brand
+    Brand,
+    Btn
   }
 }
 </script>
