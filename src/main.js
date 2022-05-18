@@ -4,10 +4,8 @@ import App from './App.vue'
 Vue.component(TypeNav.name, TypeNav)
 Vue.config.productionTip = false
 // 引入路由
-import { reqCategoryList } from '@/api'
 import router from './router'
 import store from './store'
-reqCategoryList();
 const vm = new Vue({
   render: h => h(App),
   // 注册路由,注册后vm拥有$route,$router属性

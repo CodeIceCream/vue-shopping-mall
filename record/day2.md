@@ -128,6 +128,37 @@ action:处理action,可以书写自己的业务逻辑，还可以处理异步
 getters:理解为计算属性，用于简化仓库数据，让组件获取仓库的数据更方便
 modules：模块式开发存储数据，传入一个对象kv指向各种小仓库
 
+10) 完成TypeNav三级联动展示数据业务
++ 寻找数据获取时机-TypeNav挂载完毕时使用Vuex的dispatch派任务
+     > mounted(){this.$store.dispatch('categoryList')}
++ 在对应的action中处理分派的任务type,type为categoryList的方法中异步请求了`reqCategoryList()`来获取分类数据，当成功时使用`commit()`提交'CATEGORYLIST'方法名和传递数据res.data
+     > const actions = {  
+          async categoryList({commit}){  
+          const res = await reqCategoryList()  
+          if (res.code === 200) {  
+               commit('CATEGORYLIST', res.data)  
+          }
+          }
+       };
++ mutations对象在收到action对象提交的数据，开始改变state，方法中第一个参数是小仓库的state 第二个参数是action传过来的数据
+     >const mutations = {  
+     CATEGORYLIST(state, categoryList){  
+     state.categoryList = categoryList;  
+     }
+     };
++ 小仓库中的state必须根据将要传过来的数据类型进行初始化
+     > const state = {  
+          a:'hehe',  
+          categoryList:[]  
+       };
++ 将小仓库中的state绑定到对应组件TypeNav的computed中，可方便组件使用数据；此时可用vuex包中的mapState辅助函数。
+     + mapState方法右侧需要的是一个函数,当使用这个计算属性时，右侧函数会立即执行一次
+     + mapState方法注入一个参数state，它是大仓库中的数据
+     > computed: {  
+          ...mapState({  
+               categoryList: (state)=>state.home.categoryList  
+          })  
+       },
 
 
 
