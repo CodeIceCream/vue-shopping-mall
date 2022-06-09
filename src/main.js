@@ -13,4 +13,4 @@ const vm = new Vue({
   // 注册仓库,注册后vm拥有$store属性
   store
 }).$mount('#app')
-window.vm = vm
+window.vm = vm;
