@@ -4,19 +4,23 @@
     <div class="container">
       <div @mouseleave="leaveIndex">
         <h2 class="all">全部商品分类</h2>
-        <div class="sort">
-          <div class="all-sort-list2">
+        <div class="sort" v-show="show">
+          <div class="all-sort-list2" @click="goSearch">
             <div
               class="item"
               v-for="(c1, index) in categoryList"
               :key="c1.categoryId"
               :class="{ cur: currIndex === index }"
             >
-              <h3 @mouseenter="changeIndex(index)">
-                <a href="">{{ c1.categoryName }}</a>
+              <h3 @mouseenter="throChangeIdx(index)">
+                <a
+                  :data-categoryName="c1.categoryName"
+                  :data-category1Id="c1.categoryId"
+                  >{{ c1.categoryName }}
+                </a>
               </h3>
               <!-- 二、三级分类 -->
-              <div class="item-list clearfix" v-show="currIndex==index">
+              <div class="item-list clearfix" v-show="currIndex == index">
                 <div
                   class="subitem"
                   v-for="c2 in c1.categoryChild"
@@ -24,11 +28,19 @@
                 >
                   <dl class="fore">
                     <dt>
-                      <a href="">{{ c2.categoryName }}</a>
+                      <a
+                        :data-categoryName="c2.categoryName"
+                        :data-category2Id="c2.categoryId"
+                        >{{ c2.categoryName }}
+                      </a>
                     </dt>
                     <dd>
                       <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                        <a href="">{{ c3.categoryName }}</a>
+                        <a
+                          :data-categoryName="c3.categoryName"
+                          :data-category3Id="c3.categoryId"
+                          >{{ c3.categoryName }}
+                        </a>
                       </em>
                     </dd>
                   </dl>
@@ -53,12 +65,14 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import throttle from "lodash/throttle";
 export default {
   name: "TypeNav",
   data() {
     return {
       // 用户鼠标移至哪个索引
       currIndex: -1,
+      show: true
     };
   },
   computed: {
@@ -69,18 +83,41 @@ export default {
     }),
   },
   methods: {
-    changeIndex(index) {
+    throChangeIdx: throttle(function (index) {
       this.currIndex = index;
-      console.log('currInx',this.currIndex,'index',index)
-    },
+      console.log("currInx", this.currIndex, "index", index);
+    }, 50),
     leaveIndex() {
       this.currIndex = -1;
-    }
+    },
+    // 路由跳转的方法
+    goSearch(evt) {
+      const element = evt.target;
+      const { categoryname, category1id, category2id, category3id } =
+        element.dataset;
+      // 有categoryname属性的一定是a标签
+      if (categoryname) {
+        // 整理路由跳转的参数
+        const location = { name: "search" };
+        const query = { categoryName: categoryname };
+        if (category1id) {
+          query.category1Id = category1id;
+        } else if (category2id) {
+          query.category2Id = category2id;
+        } else if (category3id) {
+          query.category3Id = category3id;
+        }
+        // 合并参数
+        location.query = query;
+        this.$router.push(location);
+      }
+    },
   },
   // 挂载完毕时可以发送请求数据
   mounted() {
     // 通知Vuex发请求，存入仓库中
     this.$store.dispatch("categoryList");
+    console.log('TypeNav挂载咯')
   },
 };
 </script>
@@ -192,7 +229,6 @@ export default {
               }
             }
           }
-
         }
         .cur {
           background-color: skyblue;

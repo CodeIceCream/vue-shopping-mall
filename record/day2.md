@@ -98,6 +98,15 @@ $route中可以获取路由的信息|参数：
 前端项目本地服务器: http://localhost:8080/#/home
 后台服务器: http://gmall-h5-api.atguigu.cn
 + 如何解决跨域? ---> `JSONP、CROS、代理`
+解决跨域-代理
+在webpack文档中搜索关键词devServer配置代理：
+devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://gmall-h5-api.atguigu.cn',
+      },
+    },
+  },
 
 
 
