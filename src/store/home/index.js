@@ -18,7 +18,7 @@ const mutations = {
 const actions = {
   async categoryList({commit}){
     const res = await reqCategoryList()
-    console.log('wu===', res)
+    console.log('categoryList数据结果', res)
     if (res.code === 200) {
       // 仅提交数据
       commit('CATEGORYLIST', res.data)

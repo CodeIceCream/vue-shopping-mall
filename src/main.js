@@ -1,6 +1,7 @@
 import TypeNav from '@/components/TypeNav'
 import Vue from 'vue'
 import App from './App.vue'
+// 全局注册TypeNav
 Vue.component(TypeNav.name, TypeNav)
 Vue.config.productionTip = false
 // 引入路由

@@ -16,6 +16,10 @@ export default {
   components: {
     Header,
     Footer
+  },
+  mounted(){
+    // 通知Vuex发请求，存入仓库中
+    this.$store.dispatch("categoryList");
   }
 }
 </script>
